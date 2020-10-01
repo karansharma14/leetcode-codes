@@ -1,0 +1,45 @@
+A message containing letters from A-Z is being encoded to numbers using the following mapping:
+
+'A' -> 1
+'B' -> 2
+...
+'Z' -> 26
+Given a non-empty string containing only digits, determine the total number of ways to decode it.
+
+The answer is guaranteed to fit in a 32-bit integer.
+
+ 
+
+Example 1:
+
+Input: s = "12"
+Output: 2
+Explanation: It could be decoded as "AB" (1 2) or "L" (12).
+
+
+
+Code :
+
+class Solution {
+public:
+   bool good(string s){
+        return stoi(s) <=26 && stoi(s) >=1;
+    }
+    int numDecodings(string s) {
+        int n = s.size();
+        if(n==0 || s[0]=='0') return 0;
+        if(n==1) return 1;
+        int dp[n+1];
+        dp[n]=1;
+        dp[n-1]= s[n-1]=='0' ? 0 : 1;
+        for(int i=n-2;i>=0;i--){
+            if(s[i]=='0') dp[i]=0;
+            else dp[i] = dp[i+1] + (good(s.substr(i,2)) ? dp[i+2] : 0);
+        }
+        return dp[0];
+    }
+};
+
+
+time complexity : o(N)
+space complexity : o(N)
